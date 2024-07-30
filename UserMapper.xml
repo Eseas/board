@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.fastcampus.ch4.dao.UserMapper">
+	<!-- 유저 수 세기 -->
+	<select id="count" resultType="int">
+		SELECT count(*)
+		FROM user_info
+	</select>
+	
+	<!-- 유저 검색 -->
+	<sql id="selectOnUser">
+		SELECT id, pwd, name, email, birth, sns, reg_date, up_date
+  		FROM user_info
+	</sql>
+	
+  	<select id="selectOneUser" parameterType="String" resultType="UserDto">
+  		<include refid="selectOnUser" />
+  		WHERE id = #{id}
+  	</select>
+  	
+  	<select id="selectAllUser" resultType="UserDto">
+  		<include refid="selectOnUser" />
+  		ORDER BY reg_date desc
+  	</select>
+  	
+  	<!-- 유저 등록 -->
+  	<insert id="insert" parameterType="UserDto">
+  		INSERT INTO user_info
+  			(id, pwd, name, email, sns)
+  		VALUES
+  			(#{id}, #{pwd}, #{name}, #{email}, #{sns})
+  	</insert>
+  	
+  	<!-- 유저 삭제 -->  	
+  	<delete id="deleteOneUser" parameterType="String">
+  		DELETE FROM user_info
+  		WHERE id=#{id}
+  	</delete>
+  	
+  	<delete id="deleteAllUser">
+  		DELETE FROM user_info
+  	</delete>
+  	
+  	<!-- 유저 정보 갱신 -->
+  	<update id="updateUser" parameterType="userDto">
+  		UPDATE user_info
+  		SET
+  			id = #{id},
+  			pwd = #{pwd},
+  			name = #{name},
+  			email = #{email},
+  			birth = #{birth},
+  			sns = #{sns}
+  		WHERE id = #{id}
+  	</update>
+</mapper>
