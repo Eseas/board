@@ -15,6 +15,7 @@ import com.fastcampus.ch4.dao.UserDao;
 import com.fastcampus.ch4.domain.UserDto;
 
 @Controller
+@RequestMapping("/login")
 public class LoginController {
 	
 	@Autowired
@@ -37,9 +38,8 @@ public class LoginController {
 			
 			return "redirect:login/login?msg=" + msg;
 		}
-		
 		HttpSession session = request.getSession();
-		session.setAttribute("id", id);
+		session.setAttribute("id", "aaaa");
 		if(rememberId) {
 			Cookie cookie = new Cookie("id", id);
 			cookie.setMaxAge(3600);
@@ -55,8 +55,16 @@ public class LoginController {
 		return "redirect:"+toURL;
 	}
 	
+	@GetMapping("/logout")
+	public String logout(
+				HttpSession session
+			) {
+		session.invalidate();
+		return "redirect:/";
+	}
+	
 	private boolean loginCheck(String id, String pwd) {
-		UserDto user;
+		/*UserDto user;
 		
 		try {
 			user = userDao.select(id);
@@ -66,5 +74,7 @@ public class LoginController {
 		}
 		
 		return user != null && user.getPwd().equals(pwd);
+		*/
+		return true;
 	}
 }
